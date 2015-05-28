@@ -120,6 +120,22 @@ public class LoggerOutputStream extends OutputStream {
         count = 0;
     }
 
+    protected int getCount() {
+        return count;
+    }
+
+    protected void resetCount() {
+        count = 0;
+    }
+
+    protected byte[] getBuf() {
+        return buf;
+    }
+
+    protected Level getLevel() {
+        return level;
+    }
+
     /**
      * Closes this output stream and releases any system resources associated
      * with this stream.
@@ -129,7 +145,7 @@ public class LoggerOutputStream extends OutputStream {
         hasBeenClosed = true;
     }
 
-    private void log(Level level, String str) {
+    protected void log(Level level, String str) {
         switch (level.toInt()) {
         case Level.ERROR_INT:
             log.error(str);

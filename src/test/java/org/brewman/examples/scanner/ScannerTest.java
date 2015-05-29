@@ -18,6 +18,8 @@ public class ScannerTest {
             .getLogger(ScannerTest.class);
 
     private static final int STEP_TIMEOUT = 10;
+    private static final int FAST_TYPE_TIME = 50;
+    private static final int SLOW_TYPE_TIME = 1000;
 
     @Test
     public void test() throws IOException {
@@ -29,13 +31,15 @@ public class ScannerTest {
 
             @Override
             public int read() throws IOException {
-                if (first) {
-                    try {
+                try {
+                    if (first) {
                         Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        LOG.error(e.getMessage());
+                        first = false;
+                    } else {
+                        Thread.sleep(SLOW_TYPE_TIME);
                     }
-                    first = false;
+                } catch (InterruptedException e) {
+                    LOG.error(e.getMessage());
                 }
 
                 int rtn = bos.read();
@@ -66,9 +70,9 @@ public class ScannerTest {
         try {
             LOG.debug("waiting on result");
             res = handler.get(STEP_TIMEOUT, TimeUnit.SECONDS);
-            LOG.debug("got result");
+            LOG.debug("got result: {}", res);
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error(e.toString());
             handler.cancel(true);
         }
 

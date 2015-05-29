@@ -22,8 +22,7 @@ public class ScannerTest {
     }
 
     public static String readLine(Scanner scanner) {
-        ExecutorService executor = Executors.newFixedThreadPool(5);
-        // ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         String res = null;
 
